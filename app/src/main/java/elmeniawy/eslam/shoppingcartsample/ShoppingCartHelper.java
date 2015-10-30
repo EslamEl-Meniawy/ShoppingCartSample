@@ -14,7 +14,7 @@ public class ShoppingCartHelper {
         ShoppingCartEntry curEntry = cartMap.get(product.getId());
         if (quantity <= 0) {
             if (curEntry != null)
-                removeProduct(product);
+                removeProduct(product.getId());
             return;
         }
         if (curEntry == null) {
@@ -32,8 +32,12 @@ public class ShoppingCartHelper {
         return 0;
     }
 
-    public static void removeProduct(Product product) {
-        cartMap.remove(product.getId());
+    public static void removeProduct(Long id) {
+        cartMap.remove(id);
+    }
+
+    public static void emptyCart() {
+        cartMap.clear();
     }
 
     public static ArrayList<Product> getCartList() {

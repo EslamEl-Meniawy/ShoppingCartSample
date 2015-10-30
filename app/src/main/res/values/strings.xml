@@ -7,5 +7,6 @@
     <string name="in_cart">Currently in Cart:</string>
     <string name="quantity">Quantity:</string>
     <string name="add">Add to Cart</string>
-    <string name="edit_quantity">Click on a product to edit the quantity</string>
+    <string name="edit_quantity">Click on a product to edit the quantity\nLong click for more actions</string>
+    <string name="total">Cart Subtotal: $0.0</string>
 </resources>

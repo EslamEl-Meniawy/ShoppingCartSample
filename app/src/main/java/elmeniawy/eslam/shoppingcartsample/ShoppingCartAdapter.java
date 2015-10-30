@@ -2,8 +2,10 @@ package elmeniawy.eslam.shoppingcartsample;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private VolleySingleton volleySingleton;
     private ImageLoader imageLoader;
     private static Context context;
+    public static final String PREF_FILE_NAME = "ShoppingCartPref";
 
     public ShoppingCartAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
@@ -76,7 +79,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return listProducts.size();
     }
 
-    static class ViewHolderProductsList extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ViewHolderProductsList extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         private ImageView itemImage;
         private TextView itemTitle;
         private TextView itemQuantity;
@@ -89,6 +92,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemQuantity = (TextView) itemView.findViewById(R.id.ItemQuantity);
             itemPrice = (TextView) itemView.findViewById(R.id.ItemPrice);
             itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
         }
 
         @Override
@@ -98,6 +102,16 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             bundle.putParcelable("product", listProducts.get(getLayoutPosition()));
             intent.putExtras(bundle);
             context.startActivity(intent);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select Action");
+            menu.add(0, v.getId(), 0, "Delete");
+            SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong("productid", listProducts.get(getLayoutPosition()).getId());
+            editor.apply();
         }
     }
 }
