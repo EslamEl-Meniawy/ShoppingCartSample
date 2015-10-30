@@ -68,7 +68,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         String imageName = currentProduct.getImage();
         if (imageName != null && !imageName.equals("")) {
-            imageLoader.get("http://192.168.0.102:1234/shoppingcart/images/" + imageName, new ImageLoader.ImageListener() {
+            imageLoader.get("https://shoppingcartsample.herokuapp.com/images/" + imageName, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     holderProduct.itemImage.setImageBitmap(response.getBitmap());

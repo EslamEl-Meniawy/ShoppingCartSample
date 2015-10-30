@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendJSONRequest() {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://192.168.0.102:1234/shoppingcart/list.json", new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://shoppingcartsample.herokuapp.com/list", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();

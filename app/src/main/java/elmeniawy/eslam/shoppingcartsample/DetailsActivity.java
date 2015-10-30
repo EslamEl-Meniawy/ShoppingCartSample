@@ -67,7 +67,7 @@ public class DetailsActivity extends AppCompatActivity {
             imageLoader = volleySingleton.getImageLoader();
             String imageName = product.getImage();
             if (imageName != null && !imageName.equals("")) {
-                imageLoader.get("http://192.168.0.102:1234/shoppingcart/images/" + imageName, new ImageLoader.ImageListener() {
+                imageLoader.get("https://shoppingcartsample.herokuapp.com/images/" + imageName, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                         itemImage.setImageBitmap(response.getBitmap());
@@ -79,7 +79,7 @@ public class DetailsActivity extends AppCompatActivity {
                 });
             }
             requestQueue = volleySingleton.getRequestQueue();
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "http://192.168.0.102:1234/shoppingcart/details.json", new Response.Listener<JSONObject>() {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://shoppingcartsample.herokuapp.com/details", new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     if (response != null && response.length() > 0) {
