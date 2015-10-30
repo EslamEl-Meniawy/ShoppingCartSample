@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Shopping Cart Sample</string>
+    <string name="main_title">Products Catalog</string>
+    <string name="item_title">Item Title</string>
+    <string name="item_price">$00.00</string>
+    <string name="details">Product Details:</string>
+    <string name="in_cart">Currently in Cart:</string>
+    <string name="quantity">Quantity: </string>
+    <string name="add">Add to Cart</string>
+</resources>
