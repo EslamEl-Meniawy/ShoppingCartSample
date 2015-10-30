@@ -7,9 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -18,16 +16,16 @@ import com.android.volley.toolbox.ImageLoader;
 import java.util.ArrayList;
 
 /**
- * Created by Eslam El-Meniawy on 28-Oct-15.
+ * Created by Eslam El-Meniawy on 30-Oct-15.
  */
-public class ProductsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static ArrayList<Product> listProducts = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private VolleySingleton volleySingleton;
     private ImageLoader imageLoader;
     private static Context context;
 
-    public ProductsListAdapter(Context context) {
+    public ShoppingCartAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
         volleySingleton = VolleySingleton.getInstance();
         imageLoader = volleySingleton.getImageLoader();
@@ -42,7 +40,7 @@ public class ProductsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder;
-        View view = layoutInflater.inflate(R.layout.item, parent, false);
+        View view = layoutInflater.inflate(R.layout.cart_item, parent, false);
         viewHolder = new ViewHolderProductsList(view);
         return viewHolder;
     }
@@ -52,19 +50,11 @@ public class ProductsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         Product currentProduct = listProducts.get(position);
         final ViewHolderProductsList holderProduct = (ViewHolderProductsList) holder;
         holderProduct.itemTitle.setText(currentProduct.getTitle());
+        holderProduct.itemQuantity.setText("Quantity: " + ShoppingCartHelper.getProductQuantity(currentProduct));
         if (currentProduct.getPrice() > 0) {
-            holderProduct.itemPrice.setText("$" + currentProduct.getPrice());
+            holderProduct.itemPrice.setText("Total price: $" + currentProduct.getPrice() * ShoppingCartHelper.getProductQuantity(currentProduct));
         } else {
             holderProduct.itemPrice.setText("Price not available");
-        }
-        if ((int) currentProduct.getRating() == -1) {
-            holderProduct.itemRating.setRating(0.0F);
-            AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
-            alpha.setDuration(0);
-            alpha.setFillAfter(true);
-            holderProduct.itemRating.startAnimation(alpha);
-        } else {
-            holderProduct.itemRating.setRating((float) currentProduct.getRating());
         }
         String imageName = currentProduct.getImage();
         if (imageName != null && !imageName.equals("")) {
@@ -89,15 +79,15 @@ public class ProductsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class ViewHolderProductsList extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView itemImage;
         private TextView itemTitle;
+        private TextView itemQuantity;
         private TextView itemPrice;
-        private RatingBar itemRating;
 
         public ViewHolderProductsList(View itemView) {
             super(itemView);
             itemImage = (ImageView) itemView.findViewById(R.id.ItemImage);
             itemTitle = (TextView) itemView.findViewById(R.id.ItemTitle);
+            itemQuantity = (TextView) itemView.findViewById(R.id.ItemQuantity);
             itemPrice = (TextView) itemView.findViewById(R.id.ItemPrice);
-            itemRating = (RatingBar) itemView.findViewById(R.id.ItemRating);
             itemView.setOnClickListener(this);
         }
 
