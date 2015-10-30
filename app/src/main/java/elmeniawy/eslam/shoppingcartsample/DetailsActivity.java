@@ -103,6 +103,26 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             });
             requestQueue.add(request);
+            inCart.setText(getString(R.string.in_cart) + " " + ShoppingCartHelper.getProductQuantity(product));
+            addToCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int q = 0;
+                    try {
+                        q = Integer.parseInt(quantity.getText().toString());
+
+                        if (q < 0) {
+                            showSnackBar("Please enter a quantity of 0 or higher");
+                            return;
+                        }
+                    } catch (Exception e) {
+                        showSnackBar("Please enter a numeric quantity");
+                        return;
+                    }
+                    ShoppingCartHelper.setQuantity(product, q);
+                    finish();
+                }
+            });
         } else {
             showSnackBar("Error Fetching Data!");
         }
