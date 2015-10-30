@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     public static final String PREF_FILE_NAME = "ShoppingCartPref";
     private FloatingActionButton buy;
+    private TextView cartTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listProductsSwipe = (SwipeRefreshLayout) findViewById(R.id.ListViewCatalogSwipeRefresh);
         listProductsRecycler = (RecyclerView) findViewById(R.id.ListViewCatalog);
+        buy = (FloatingActionButton) findViewById(R.id.ButtonPay);
+        cartTotal = (TextView) findViewById(R.id.CartTotal);
         linearLayoutManager = new LinearLayoutManager(ShoppingCartActivity.this);
         listProductsRecycler.setLayoutManager(linearLayoutManager);
         shoppingCartAdapter = new ShoppingCartAdapter(ShoppingCartActivity.this);
@@ -45,7 +49,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         listProductsSwipe.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         listProductsSwipe.setRefreshing(true);
         getCartContent();
-        buy = (FloatingActionButton) findViewById(R.id.ButtonPay);
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,15 +78,16 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private void getCartContent() {
         listProducts = ShoppingCartHelper.getCartList();
         shoppingCartAdapter.setProductsList(listProducts);
+        double totalAmount = 0;
+        for (Product p : listProducts) {
+            totalAmount += p.getPrice() * ShoppingCartHelper.getProductQuantity(p);
+        }
+        cartTotal.setText("Cart Subtotal: $" + totalAmount);
         listProductsSwipe.setRefreshing(false);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        System.out.println(item);
-        System.out.println(item.getItemId());
-        System.out.println(item.getTitle());
-        System.out.println(item.getMenuInfo());
         if (item.getTitle().equals("Delete")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingCartActivity.this);
             builder.setMessage("Delete product from shopping cart?")
